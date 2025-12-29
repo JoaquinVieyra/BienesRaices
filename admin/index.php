@@ -1,0 +1,75 @@
+<?php
+require "../includes/funciones.php";
+$auth=autenticar();
+if (!$auth){
+    header("Location: /");
+}
+//BASE DE DATOS
+require "../includes/config/database.php";
+$db = conectarDB();
+$query = "SELECT * FROM propiedades;";
+$resultado = mysqli_query($db, $query);
+
+if ($_SERVER['REQUEST_METHOD']==='POST'){
+    $id=$_POST['id'];
+    $id=filter_var($id,FILTER_VALIDATE_INT);
+    if ($id){
+        //ELIMINAR ARCHIVO
+        $query="SELECT imagen FROM propiedades WHERE id=$id;";
+        $resultado= mysqli_query($db,$query);
+        $propiedad=mysqli_fetch_assoc($resultado);
+        unlink("../imagenes/". $propiedad['imagen']);
+
+        //ELIMAR PROPIEDAD
+        $query="DELETE FROM propiedades WHERE id=$id;";
+        $resultado=mysqli_query($db,$query);
+        if ($resultado){
+            header('location: /admin');
+        }
+    }
+}
+
+$mensaje = $_GET['mensaje'] ?? "";
+incluirTemplate('header') ?>
+
+<main class="seccion contenedor">
+    <?php if ($mensaje) { ?>
+        <div class="alerta ok">
+            <?php echo "$mensaje" ?>
+        </div>
+    <?php } ?>
+    <h1>Administrador de bienes Raices</h1>
+    <a href="/admin/propiedades/crear.php" class="boton-verdeBlock">Nueva Propiedad</a>
+    <table class="propiedades">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>TITULO</th>
+                <th>Imagen</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($propiedad = mysqli_fetch_assoc($resultado)) { ?>
+                <tr>
+                    <td><?php echo $propiedad['id'] ?></td>
+                    <td><?php echo $propiedad['titulo'] ?></td>
+                    <td><img src="/imagenes/<?php echo $propiedad['imagen'] ?>" alt="Casa playa" class="imagen-tabla"></td>
+                    <td>$<?php echo $propiedad['precio'] ?></td>
+                    <td>
+                        <form action="" method="POST" class="w-100">
+                            <input type="hidden" name="id" value="<?php  echo $propiedad['id']; ?>">
+                            <input type="submit" class="botonRojo-block" value="Eliminar">
+                        </form>
+                        <a class="botonAmarillo" href="/admin/propiedades/actualizar.php?id= <?php echo $propiedad['id'] ?> ">Editar</a>
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</main>
+
+<?php
+incluirTemplate('footer')
+?>

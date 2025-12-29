@@ -1,29 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+require "includes/funciones.php";
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienes Raices</title>
-    <link rel="stylesheet" href="build/css/app.css">
-</head>
-
-<body>
-    <header class="header">
-        <div class="contenedor contenido-header">
-            <div class="barra">
-                <a href="/">
-                    <img src="build/img/logo.svg" alt="Logotipo" loading="lazy">
-                </a>
-                <nav class="navegacion">
-                    <a href="nosotros.html">Nosotros</a>
-                    <a href="anuncios.html">Anuncios</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="contacto.html">Conctacto</a>
-                </nav>
-            </div>
-        </div>
-    </header>
+incluirTemplate('header') ?>
     <main class="contenedor seccion">
         <h1>Conoce sobre nosotros</h1>
         <div class="contenido-nosotros">
@@ -68,17 +46,7 @@
 
         </div>
     </section>
-        <footer class="footer seccion">
-        <div class="contenedor contenedor-footer">
-            <nav class="navegacion">
-                <a href="nosotros.html">Nosotros</a>
-                <a href="anuncios.html">Anuncios</a>
-                <a href="blog.html">Blog</a>
-                <a href="contacto.html">Conctacto</a>
-            </nav>
-        </div>
-        <p class="copy">Todos los derechos reservados
-        </p>
-    </footer>
-</body>
-</html>
+
+<?php 
+incluirTemplate('footer')
+ ?>
